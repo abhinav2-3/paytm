@@ -1,14 +1,12 @@
 import { Card } from "@repo/ui/card";
 
-export const OnRampTransactions = ({
+export const P2PTransactions = ({
   transactions,
 }: {
   transactions: {
     time: Date;
     amount: number;
-    // TODO: Can the type of `status` be more specific?
-    status: string;
-    provider: string;
+    type: string;
   }[];
 }) => {
   if (!transactions.length) {
@@ -24,18 +22,13 @@ export const OnRampTransactions = ({
         {transactions.map((t) => (
           <div className="flex justify-between pt-2">
             <div>
-              <div className="text-sm">Received INR</div>
+              <div className="text-sm font-semibold">{t.type} INR</div>
               <div className="text-slate-600 text-xs">
                 {t.time.toDateString()}
               </div>
-              <div
-                className={`text-xs ${t.status === "Success" ? "text-green-600" : t.status === "Failure" ? "text-red-600" : "text-slate-600"}`}
-              >
-                {t.status}
-              </div>
             </div>
-            <div className="flex flex-col justify-center">
-              + Rs {t.amount / 100}
+            <div className="flex flex-col justify-center text-right font-semibold">
+              {t.type === "Sent" ? "-" : "+"} Rs {t.amount / 100}
             </div>
           </div>
         ))}
