@@ -3,6 +3,26 @@ import prisma from "@repo/db/client";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../auth";
 
+const webhook = async (token: string, userId: string, amount: number) => {
+  try {
+    const response = await fetch("http://localhost:3003/hdfcWebhook", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        token: token,
+        user_identifier: userId,
+        amount: amount,
+      }),
+    });
+
+    await response.json();
+  } catch (error) {
+    console.error("Error:", error);
+  }
+};
+
 export async function createOnRampTransaction(
   provider: string,
   amount: number
@@ -23,5 +43,8 @@ export async function createOnRampTransaction(
       amount: amount * 100,
     },
   });
+
+  await webhook(token, session.user?.id, amount * 100);
+
   return { message: "Done" };
 }

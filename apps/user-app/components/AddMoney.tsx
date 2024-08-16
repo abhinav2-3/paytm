@@ -9,11 +9,19 @@ import { createOnRampTransaction } from "../app/lib/actions/createOnrampTransact
 const SUPPORTED_BANKS = [
   {
     name: "HDFC Bank",
-    redirectUrl: "https://netbanking.hdfcbank.com",
+    redirectUrl: "/transfer",
   },
   {
     name: "Axis Bank",
-    redirectUrl: "https://www.axisbank.com/",
+    redirectUrl: "/transfer",
+  },
+  {
+    name: "State Bank of India",
+    redirectUrl: "/transfer",
+  },
+  {
+    name: "Union Bank of India",
+    redirectUrl: "/transfer",
   },
 ];
 
@@ -52,6 +60,7 @@ export const AddMoney = () => {
           <Button
             onClick={async () => {
               await createOnRampTransaction(provider, value);
+              setValue(0);
               window.location.href = redirectUrl || "";
             }}
           >

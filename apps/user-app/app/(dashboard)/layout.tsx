@@ -8,7 +8,7 @@ import { GoArrowUpRight } from "react-icons/go";
 const layout = ({ children }: { children: ReactNode }) => {
   return (
     <div className="flex">
-      <div className="w-72 border-r border-slate-300 min-h-screen mr-4 pt-28">
+      <div className="w-72 border-r border-slate-300 min-h-[90vh] mr-4 pt-28">
         <SidebarItem
           href="/dashboard"
           title="Dashboard"

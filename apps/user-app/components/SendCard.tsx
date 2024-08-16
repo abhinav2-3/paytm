@@ -5,10 +5,13 @@ import { Card } from "@repo/ui/card";
 import { TextInput } from "@repo/ui/textinput";
 import { Button } from "@repo/ui/button";
 import { p2pTransfer } from "../app/lib/actions/p2pTransfer";
+import toast from "react-hot-toast";
+import { useRouter } from "next/navigation";
 
 const SendCard = () => {
   const [number, setNumber] = useState("");
   const [amount, setAmount] = useState("");
+  const router = useRouter();
   return (
     <div className="h-[90vh]">
       <Center>
@@ -28,6 +31,8 @@ const SendCard = () => {
               <Button
                 onClick={async () => {
                   await p2pTransfer(number, Number(amount) * 100);
+                  toast.success("Money Transfered");
+                  router.push("/transfer");
                   setNumber("");
                   setAmount("");
                 }}

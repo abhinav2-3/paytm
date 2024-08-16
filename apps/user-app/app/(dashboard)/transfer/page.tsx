@@ -4,6 +4,7 @@ import { authOptions } from "../../lib/auth";
 import { AddMoney } from "../../../components/AddMoney";
 import { BalanceCard } from "../../../components/BalanceCard";
 import { OnRampTransactions } from "../../../components/OnRampTransaction";
+import { handleError } from "../../lib/Exception";
 
 async function getBalance() {
   const session = await getServerSession(authOptions);
@@ -36,6 +37,8 @@ async function getOnRampTransactions() {
 export default async function () {
   const balance = await getBalance();
   const transactions = await getOnRampTransactions();
+
+  if (!balance || !transactions) throw new handleError();
 
   return (
     <div className="w-full">

@@ -20,7 +20,9 @@ export const P2PTransactions = ({
     <Card title="Recent Transactions">
       <div className="pt-2">
         {transactions.map((t) => (
-          <div className="flex justify-between pt-2">
+          <div
+            className={`flex justify-between pt-2 ${t.type === "Sent" && "text-green-600"}`}
+          >
             <div>
               <div className="text-sm font-semibold">{t.type} INR</div>
               <div className="text-slate-600 text-xs">
