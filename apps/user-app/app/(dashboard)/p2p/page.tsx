@@ -5,6 +5,14 @@ import { authOptions } from "../../lib/auth";
 import prisma from "@repo/db/client";
 import { P2PTransactions } from "../../../components/P2PTransactions";
 
+interface transactionsType {
+  id: number;
+  amount: number;
+  timestamp: Date;
+  fromUserId: number;
+  toUserId: number;
+}
+
 const getP2PTransaction = async () => {
   const session = await getServerSession(authOptions);
   const txns = await prisma.p2pTransfer.findMany({
@@ -15,7 +23,7 @@ const getP2PTransaction = async () => {
       ],
     },
   });
-  return txns.map((t) => ({
+  return txns.map((t:transactionsType) => ({
     time: t.timestamp,
     amount: t.amount,
     type: t.fromUserId === Number(session?.user?.id) ? "Sent" : "Received",
