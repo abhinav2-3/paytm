@@ -28,34 +28,38 @@ export const authOptions = {
         password: { label: "Password", type: "password", required: true },
       },
       // TODO: User credentials type from next-aut
-      async authorize(credentials: any) {
+      async authorize(credentials) {
+        if (!credentials) {
+          return null;
+        }
         // Do zod validation, OTP validation here
-        const hashedPassword = await bcrypt.hash(credentials.password, 10);
+        const { phone, password } = credentials;
         const existingUser = await db.user.findFirst({
           where: {
-            number: credentials.phone,
+            number: phone,
           },
         });
 
         if (existingUser) {
           const passwordValidation = await bcrypt.compare(
-            credentials.password,
+            password,
             existingUser.password
           );
           if (passwordValidation) {
             return {
               id: existingUser.id.toString(),
               name: existingUser.name,
-              email: existingUser.number,
+              email: existingUser.email,
             };
           }
           return null;
         }
+        const hashedPassword = await bcrypt.hash(password, 10);
 
         try {
           const user = await db.user.create({
             data: {
-              number: credentials.phone,
+              number: phone,
               name: credentials.name,
               email: credentials.email,
               password: hashedPassword,
