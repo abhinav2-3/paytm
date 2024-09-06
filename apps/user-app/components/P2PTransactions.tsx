@@ -1,4 +1,5 @@
 import { Card } from "@repo/ui/card";
+import { formatPrice } from "../utils/FormatPrice";
 
 export const P2PTransactions = ({
   transactions,
@@ -30,7 +31,7 @@ export const P2PTransactions = ({
               </div>
             </div>
             <div className="flex flex-col justify-center text-right font-semibold">
-              {t.type === "Sent" ? "-" : "+"} Rs {t.amount / 100}
+              {t.type === "Sent" ? "-" : "+"} {formatPrice(t.amount / 100)}
             </div>
           </div>
         ))}

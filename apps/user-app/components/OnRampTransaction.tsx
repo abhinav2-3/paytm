@@ -1,4 +1,5 @@
 import { Card } from "@repo/ui/card";
+import { formatPrice } from "../utils/FormatPrice";
 
 export const OnRampTransactions = ({
   transactions,
@@ -35,7 +36,7 @@ export const OnRampTransactions = ({
               </div>
             </div>
             <div className="flex flex-col justify-center">
-              + Rs {t.amount / 100}
+              {formatPrice(t.amount / 100)}
             </div>
           </div>
         ))}

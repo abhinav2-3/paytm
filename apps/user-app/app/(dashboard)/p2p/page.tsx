@@ -23,7 +23,7 @@ const getP2PTransaction = async () => {
       ],
     },
   });
-  return txns.map((t:transactionsType) => ({
+  return txns.map((t: transactionsType) => ({
     time: t.timestamp,
     amount: t.amount,
     type: t.fromUserId === Number(session?.user?.id) ? "Sent" : "Received",
