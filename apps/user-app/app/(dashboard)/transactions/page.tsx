@@ -4,7 +4,7 @@ import { OnRampTransactions } from "../../../components/OnRampTransaction";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../../lib/auth";
 
-interface TransactionsType {
+export interface TransactionsType {
   startTime: Date;
   amount: number;
   status: string;

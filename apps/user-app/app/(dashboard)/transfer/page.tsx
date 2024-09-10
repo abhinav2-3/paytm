@@ -5,6 +5,7 @@ import { AddMoney } from "../../../components/AddMoney";
 import { BalanceCard } from "../../../components/BalanceCard";
 import { OnRampTransactions } from "../../../components/OnRampTransaction";
 import { handleError } from "../../lib/Exception";
+import { TransactionsType } from "../transactions/page";
 
 async function getBalance() {
   const session = await getServerSession(authOptions);
@@ -26,7 +27,7 @@ async function getOnRampTransactions() {
       userId: Number(session?.user?.id),
     },
   });
-  return txns.map((t) => ({
+  return txns.map((t: TransactionsType) => ({
     time: t.startTime,
     amount: t.amount,
     status: t.status,
