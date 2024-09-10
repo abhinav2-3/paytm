@@ -1,8 +1,18 @@
 import db from "@repo/db/client";
 import CredentialsProvider from "next-auth/providers/credentials";
 import bcrypt from "bcrypt";
+import { NextAuthOptions } from "next-auth";
+// import { Session, User } from "next-auth";
+// import { JWT } from "next-auth/jwt";
 
-export const authOptions = {
+interface CredentialsType {
+  phone: string;
+  name: string;
+  email: string;
+  password: string;
+}
+
+export const authOptions: NextAuthOptions = {
   providers: [
     CredentialsProvider({
       name: "Credentials",
@@ -27,13 +37,13 @@ export const authOptions = {
         },
         password: { label: "Password", type: "password", required: true },
       },
-      // TODO: User credentials type from next-aut
-      async authorize(credentials) {
+      // TODO: User credentials type from next-auth
+      async authorize(credentials: CredentialsType | undefined) {
         if (!credentials) {
-          return null;
+          throw new Error("Missing credentials");
         }
         // Do zod validation, OTP validation here
-        const { phone, password } = credentials;
+        const { phone, password, name, email } = credentials;
         const existingUser = await db.user.findFirst({
           where: {
             number: phone,
@@ -41,50 +51,51 @@ export const authOptions = {
         });
 
         if (existingUser) {
-          const passwordValidation = await bcrypt.compare(
+          const isValidPassword = await bcrypt.compare(
             password,
             existingUser.password
           );
-          if (passwordValidation) {
+          if (isValidPassword) {
             return {
               id: existingUser.id.toString(),
               name: existingUser.name,
               email: existingUser.email,
             };
+          } else {
+            throw new Error("Invalid password");
           }
-          return null;
+        } else {
+          const hashedPassword = await bcrypt.hash(password, 10);
+          try {
+            const user = await db.user.create({
+              data: {
+                number: phone,
+                name: name,
+                email: email,
+                password: hashedPassword,
+              },
+            });
+
+            return {
+              id: user.id.toString(),
+              name: user.name,
+              email: user.number,
+            };
+          } catch (error) {
+            console.error("Error in authorization:", error);
+            throw new Error("Authorization failed");
+          }
         }
-        const hashedPassword = await bcrypt.hash(password, 10);
-
-        try {
-          const user = await db.user.create({
-            data: {
-              number: phone,
-              name: credentials.name,
-              email: credentials.email,
-              password: hashedPassword,
-            },
-          });
-
-          return {
-            id: user.id.toString(),
-            name: user.name,
-            email: user.number,
-          };
-        } catch (e) {
-          console.error(e);
-        }
-
-        return null;
       },
     }),
   ],
+  // eslint-disable-next-line turbo/no-undeclared-env-vars
   secret: process.env.JWT_SECRET || "secret",
   callbacks: {
-    // TODO: can u fix the type here? Using any is bad
-    async session({ token, session }: any) {
-      session.user.id = token.sub;
-
+    async session({ token, session }) {
+      if (session.user) {
+        session.user.id = token.sub ?? "";
+      }
       return session;
     },
   },
