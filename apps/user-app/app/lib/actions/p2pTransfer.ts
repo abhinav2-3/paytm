@@ -10,6 +10,7 @@ export async function p2pTransfer(reciever: string, amount: number) {
   const sender = session?.user?.id;
   if (!sender) {
     return {
+      status: 404,
       message: "Error while sending",
     };
   }
@@ -22,6 +23,7 @@ export async function p2pTransfer(reciever: string, amount: number) {
 
   if (!toUser) {
     return {
+      status: 404,
       message: "Reciever is not Found",
     };
   }

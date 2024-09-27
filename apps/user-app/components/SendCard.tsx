@@ -15,6 +15,19 @@ const SendCard = () => {
   const [amount, setAmount] = useState("");
   const [loading, setLoading] = useState(false);
 
+  const handleP2P = async () => {
+    setLoading(true);
+    const tnx = await p2pTransfer(number, Number(amount) * 100);
+    if (tnx?.status !== 404) {
+      toast.success("Money Transfered") && router.push("/transfer");
+    } else {
+      toast.error("Transfer Failed");
+    }
+    setNumber("");
+    setAmount("");
+    setLoading(false);
+  };
+
   // const phoneNumber = searchParams.get("number");
 
   return (
@@ -37,13 +50,7 @@ const SendCard = () => {
                 loading={loading}
                 // phoneNumber={phoneNumber}
                 onClick={async () => {
-                  setLoading(true);
-                  await p2pTransfer(number, Number(amount) * 100);
-                  toast.success("Money Transfered");
-                  router.push("/transfer");
-                  setNumber("");
-                  setAmount("");
-                  setLoading(false);
+                  await handleP2P();
                 }}
               >
                 {loading ? "Sending..." : "Send Money"}
