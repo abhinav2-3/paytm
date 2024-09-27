@@ -27,6 +27,7 @@ const SUPPORTED_BANKS = [
 
 export const AddMoney = () => {
   const [provider, setProvider] = useState(SUPPORTED_BANKS[0]?.name || "");
+  const [loading, setLoading] = useState(false);
   const [value, setValue] = useState(0);
   const [redirectUrl, setRedirectUrl] = useState(
     SUPPORTED_BANKS[0]?.redirectUrl
@@ -58,13 +59,16 @@ export const AddMoney = () => {
         />
         <div className="flex justify-center pt-4">
           <Button
+            loading={loading}
             onClick={async () => {
+              setLoading(true);
               await createOnRampTransaction(provider, value);
               setValue(0);
               window.location.href = redirectUrl || "";
+              setLoading(false);
             }}
           >
-            Add Money
+            {loading ? "Adding..." : "Add Money"}
           </Button>
         </div>
       </div>
