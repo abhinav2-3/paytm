@@ -14,6 +14,11 @@ export interface TransactionsType {
 
 async function getOnRampTransactions() {
   const session = await getServerSession(authOptions);
+  await prisma.onRampTransaction.deleteMany({
+    where: {
+      status: "Processing",
+    },
+  });
   const txns = await prisma.onRampTransaction.findMany({
     where: {
       userId: Number(session?.user?.id),

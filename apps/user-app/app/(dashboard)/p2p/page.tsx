@@ -34,11 +34,11 @@ const page = async () => {
   const transactions = await getP2PTransaction();
 
   return (
-    <div className="w-full flex justify-center flex-col sm:flex-row">
-      <div className="w-full sm:w-2/3">
+    <div className="w-full flex justify-center flex-col md:flex-row">
+      <div className="w-full md:w-1/2 md:px-8">
         <SendCard />
       </div>
-      <div className="grid place-items-center border border-black">
+      <div className="grid place-items-center md:w-1/2 w-full">
         <P2PTransactions transactions={transactions} />
       </div>
     </div>
