@@ -1,16 +1,16 @@
-import { NextResponse } from "next/server"
-import { PrismaClient } from "@repo/db/client";
-
-const client = new PrismaClient();
+import { NextResponse } from "next/server";
+import Prisma from "@repo/db/client";
 
 export const GET = async () => {
-    await client.user.create({
-        data: {
-            email: "asd",
-            name: "adsads"
-        }
-    })
-    return NextResponse.json({
-        message: "hi there"
-    })
-}
+  await Prisma.user.create({
+    data: {
+      email: "asd",
+      name: "adsads",
+      number: "598976531",
+      password: "111",
+    },
+  });
+  return NextResponse.json({
+    message: "hi there",
+  });
+};

@@ -13,7 +13,7 @@ const SendCard = () => {
   const [amount, setAmount] = useState("");
   const router = useRouter();
   return (
-    <div className="h-[90vh]">
+    <div className="h-auto sm:h-[90vh]">
       <Center>
         <Card title="Send">
           <div className="min-w-72 pt-2">

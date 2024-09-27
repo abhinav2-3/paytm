@@ -9,7 +9,7 @@ import { AiOutlineUserSwitch } from "react-icons/ai";
 const layout = ({ children }: { children: ReactNode }) => {
   return (
     <div className="flex">
-      <div className="w-72 border-r border-slate-300 min-h-[90vh] mr-4 pt-28">
+      <div className="w-auto border-r border-slate-300 min-h-[90vh] mr-4 pt-28">
         <SidebarItem
           href="/dashboard"
           title="Dashboard"

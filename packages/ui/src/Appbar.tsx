@@ -17,7 +17,7 @@ export const Appbar = ({ user, onSignin, onSignout }: AppbarProps) => {
       </div>
       <div className="flex justify-center gap-6 pt-2">
         {user?.name && (
-          <div className="font-bold text-xl pt-1 flex gap-2">
+          <div className="font-bold text-xl pt-1 gap-2 hidden sm:flex">
             Welcome{" "}
             <h1 className="text-blue-600">
               {user?.name?.split(" ").slice(0, 1).join(" ")}
