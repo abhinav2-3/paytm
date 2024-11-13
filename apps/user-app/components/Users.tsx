@@ -1,16 +1,18 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import Link from "next/link";
+import { Button } from "@repo/ui/button";
+import SendCard from "./SendCard";
 // import { UserType } from "../app/(dashboard)/users/page";
 
-type User = {
+export type User = {
   id: number;
   name: string;
   number: string;
 };
 
-const Users = ({ users }: any) => {
+const Users = ({ users }: { users: any }) => {
   const [input, setInput] = useState<string>("");
+  const [openBox, setOpenBox] = useState<boolean>(false);
   const [filteredUsers, setFilteredUsers] = useState<User[]>(users);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -40,20 +42,16 @@ const Users = ({ users }: any) => {
       />
       {filteredUsers?.map((u: User) => {
         return (
-          <div
-            className="flex justify-between my-4 border-b border-slate-500 items-center"
-            key={u.id}
-          >
+          <div className="flex justify-between my-4 items-center" key={u.id}>
             <h1 className="font-bold  px-4">{u.name}</h1>
-            <Link
-              href={{
-                pathname: "/p2p",
-                query: { number: u.number },
-              }}
-              className="text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2"
-            >
-              Send Money
-            </Link>
+            <Button onClick={() => setOpenBox(true)}>Send Money</Button>
+            {openBox && (
+              <div className="w-[75%] h-[85%] rounded-2xl bg-white absolute top-16 grid place-items-center">
+                <div className="w-1/2">
+                  <SendCard user={u} closeModel={setOpenBox} />
+                </div>
+              </div>
+            )}
           </div>
         );
       })}

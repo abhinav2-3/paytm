@@ -15,7 +15,7 @@ interface transactionsType {
 
 const getP2PTransaction = async () => {
   const session = await getServerSession(authOptions);
-  const txns = await prisma.p2pTransfer.findMany({
+  const txns = await prisma.p2PTransfer.findMany({
     where: {
       OR: [
         { fromUserId: Number(session?.user?.id) },

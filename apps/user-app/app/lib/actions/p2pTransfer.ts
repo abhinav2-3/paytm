@@ -55,7 +55,7 @@ export async function p2pTransfer(reciever: string, amount: number) {
       },
     });
 
-    await tx.p2pTransfer.create({
+    await tx.p2PTransfer.create({
       data: {
         fromUserId: Number(sender),
         toUserId: toUser.id,

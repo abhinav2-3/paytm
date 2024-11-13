@@ -3,22 +3,21 @@ import prisma from "@repo/db/client";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../auth";
 
+const WEBHOOK_API: string = process.env.WEBHOOK_URL || "";
+
 const webhook = async (token: string, userId: string, amount: number) => {
   try {
-    const response = await fetch(
-      "https://paytm-webhook.onrender.com/hdfcWebhook",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          token: token,
-          user_identifier: userId,
-          amount: amount,
-        }),
-      }
-    );
+    const response = await fetch(WEBHOOK_API, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        token: token,
+        user_identifier: userId,
+        amount: amount,
+      }),
+    });
 
     await response.json();
   } catch (error) {
