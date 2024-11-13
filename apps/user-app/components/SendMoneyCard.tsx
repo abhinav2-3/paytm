@@ -1,6 +1,5 @@
 import React from "react";
 import SendCard from "./SendCard";
-import { User } from "./Users";
 
 const SendMoneyCard = ({ user }: any) => {
   console.log(user);

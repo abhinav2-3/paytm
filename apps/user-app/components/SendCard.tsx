@@ -6,9 +6,8 @@ import { TextInput } from "@repo/ui/textinput";
 import { Button } from "@repo/ui/button";
 import { p2pTransfer } from "../app/lib/actions/p2pTransfer";
 import toast from "react-hot-toast";
-import { useRouter } from "next/navigation";
 
-const SendCard = ({ user, closeModel }: { user: any; closeModel?: any }) => {
+const SendCard = ({ user, closeModel }: { user?: any; closeModel?: any }) => {
   const [number, setNumber] = useState(user?.number);
   const [amount, setAmount] = useState("");
   const [loading, setLoading] = useState(false);
