@@ -18,10 +18,7 @@ export async function p2pTransfer(reciever: string, amount: number) {
   const session = await getServerSession(authOptions);
   const sender = session?.user?.id;
   if (!sender) {
-    return {
-      status: 404,
-      message: "Error while sending",
-    };
+    throw new Error("Error while sending");
   }
 
   const toUser = await prisma.user.findFirst({
@@ -31,10 +28,7 @@ export async function p2pTransfer(reciever: string, amount: number) {
   });
 
   if (!toUser) {
-    return {
-      status: 404,
-      message: "Reciever is not Found",
-    };
+    throw new Error("Reciever is not Found");
   }
 
   await prisma.$transaction(async (tx: Prisma.TransactionClient) => {
@@ -73,4 +67,5 @@ export async function p2pTransfer(reciever: string, amount: number) {
       },
     });
   });
+  return { success: true };
 }

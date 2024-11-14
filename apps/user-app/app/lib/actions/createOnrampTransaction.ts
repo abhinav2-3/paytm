@@ -5,7 +5,6 @@ import { authOptions } from "../auth";
 import { amountSchema } from "../../../utils/zodSchema";
 
 const WEBHOOK_API: string = process.env.WEBHOOK_URL || "";
-// const WEBHOOK_API: string = "https://paytm-webhook.onrender.com/hdfcWebhook";
 
 const webhook = async (token: string, userId: string, amount: number) => {
   try {

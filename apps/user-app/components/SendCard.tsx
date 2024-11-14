@@ -16,10 +16,11 @@ const SendCard = ({ user, closeModel }: { user?: any; closeModel?: any }) => {
     setLoading(true);
     try {
       const tnx = await p2pTransfer(number, Number(amount) * 100);
-      console.log(tnx);
-      toast.success("Money Transfered");
-      setNumber("");
-      setAmount("");
+      if (tnx.success) {
+        toast.success("Money Transfered");
+        setNumber("");
+        setAmount("");
+      }
     } catch (error: any) {
       console.log(error);
       toast.error(error.message);

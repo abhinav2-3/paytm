@@ -38,9 +38,11 @@ export const AddMoney = () => {
   const addMoneyHandler = async () => {
     try {
       setLoading(true);
-      await createOnRampTransaction(provider, value);
-      window.location.href = redirectUrl || "";
-      setValue(0);
+      const response = await createOnRampTransaction(provider, value);
+      if (response.success) {
+        window.location.href = redirectUrl || "";
+        setValue(0);
+      }
     } catch (error: any) {
       if (error?.message) toast.error(error?.message);
       else toast.error("Transaction Failed");
