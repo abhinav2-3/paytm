@@ -5,6 +5,7 @@ import { authOptions } from "../auth";
 import { amountSchema } from "../../../utils/zodSchema";
 
 const WEBHOOK_API: string = process.env.WEBHOOK_URL || "";
+// const WEBHOOK_API: string = "https://paytm-webhook.onrender.com/hdfcWebhook";
 
 const webhook = async (token: string, userId: string, amount: number) => {
   try {
@@ -20,7 +21,8 @@ const webhook = async (token: string, userId: string, amount: number) => {
       }),
     });
 
-    await response.json();
+    const data = await response.json();
+    return data;
   } catch (error) {
     console.error("Error:", error);
   }
@@ -32,7 +34,7 @@ export async function createOnRampTransaction(
 ) {
   const session = await getServerSession(authOptions);
   if (!session?.user || !session?.user?.id) {
-    return { message: "Unaunthenticated Request" };
+    throw new Error("Login please");
   }
 
   const parsedData = amountSchema.safeParse(amount);
@@ -55,7 +57,6 @@ export async function createOnRampTransaction(
     },
   });
 
-  await webhook(token, session.user?.id, amount * 100);
-
-  return { message: "Done" };
+  const response = await webhook(token, session.user?.id, amount * 100);
+  return response;
 }

@@ -39,10 +39,11 @@ export const AddMoney = () => {
     try {
       setLoading(true);
       await createOnRampTransaction(provider, value);
-      setValue(0);
       window.location.href = redirectUrl || "";
+      setValue(0);
     } catch (error: any) {
-      toast.error(error.message);
+      if (error?.message) toast.error(error?.message);
+      else toast.error("Transaction Failed");
     } finally {
       setLoading(false);
     }
