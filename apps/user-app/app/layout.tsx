@@ -4,7 +4,6 @@ import { Inter } from "next/font/google";
 import { Providers } from "../provider";
 import { AppbarClient } from "../components/AppbarClient";
 import { Toaster } from "react-hot-toast";
-import YourBalance from "../components/YourBalance";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -24,7 +23,6 @@ export default function RootLayout({
         <body className={inter.className}>
           <div className="min-w-screen min-h-screen bg-[#ebe6e6]">
             <AppbarClient />
-            <YourBalance />
             <Toaster position="top-center" />
             {children}
           </div>

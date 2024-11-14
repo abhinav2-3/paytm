@@ -2,7 +2,8 @@
 import React, { useState, useEffect } from "react";
 import { Button } from "@repo/ui/button";
 import SendCard from "./SendCard";
-// import { UserType } from "../app/(dashboard)/users/page";
+import { Center } from "@repo/ui/center";
+import { IoIosCloseCircle } from "react-icons/io";
 
 export type User = {
   id: number;
@@ -46,10 +47,16 @@ const Users = ({ users }: { users: any }) => {
             <h1 className="font-bold  px-4">{u.name}</h1>
             <Button onClick={() => setOpenBox(true)}>Send Money</Button>
             {openBox && (
-              <div className="w-[75%] h-[85%] rounded-2xl bg-white absolute top-16 grid place-items-center">
-                <div className="w-1/2">
+              <div className="md:w-[75%] md:h-[85%] w-[80%] h-[50%] flex flex-col top-48 right-10 md:right-24 rounded-2xl bg-white absolute md:top-16">
+                <button
+                  className="absolute right-4 p-2 md:p-5 "
+                  onClick={() => setOpenBox(false)}
+                >
+                  <IoIosCloseCircle size={30} />
+                </button>
+                <Center>
                   <SendCard user={u} closeModel={setOpenBox} />
-                </div>
+                </Center>
               </div>
             )}
           </div>

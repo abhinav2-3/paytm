@@ -4,8 +4,17 @@ import { authOptions } from "../auth";
 import { getServerSession } from "next-auth";
 import prisma from "@repo/db/client";
 import { Prisma } from "@prisma/client";
+import { amountSchema } from "../../../utils/zodSchema";
 
 export async function p2pTransfer(reciever: string, amount: number) {
+  const parsedData = amountSchema.safeParse(amount);
+
+  if (!parsedData.success) {
+    parsedData.error.errors.forEach((issue) => {
+      throw new Error(issue.message);
+    });
+  }
+
   const session = await getServerSession(authOptions);
   const sender = session?.user?.id;
   if (!sender) {

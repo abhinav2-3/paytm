@@ -14,15 +14,18 @@ const SendCard = ({ user, closeModel }: { user?: any; closeModel?: any }) => {
 
   const handleP2P = async () => {
     setLoading(true);
-    const tnx = await p2pTransfer(number, Number(amount) * 100);
-    if (tnx?.status !== 404) {
+    try {
+      const tnx = await p2pTransfer(number, Number(amount) * 100);
+      console.log(tnx);
       toast.success("Money Transfered");
-    } else {
-      toast.error("Transfer Failed");
+      setNumber("");
+      setAmount("");
+    } catch (error: any) {
+      console.log(error);
+      toast.error(error.message);
+    } finally {
+      setLoading(false);
     }
-    setNumber("");
-    setAmount("");
-    setLoading(false);
   };
 
   return (

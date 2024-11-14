@@ -10,7 +10,7 @@ app.post("/hdfcWebhook", async (req, res) => {
   const paymentInformation: {
     token: string;
     userId: string;
-    amount: string;
+    amount: number;
   } = {
     token: req.body.token,
     userId: req.body.user_identifier,
@@ -25,12 +25,12 @@ app.post("/hdfcWebhook", async (req, res) => {
         },
         update: {
           amount: {
-            increment: Number(paymentInformation.amount),
+            increment: paymentInformation.amount,
           },
         },
         create: {
           userId: Number(paymentInformation.userId),
-          amount: Number(paymentInformation.amount),
+          amount: paymentInformation.amount,
           locked: 0,
         },
       }),

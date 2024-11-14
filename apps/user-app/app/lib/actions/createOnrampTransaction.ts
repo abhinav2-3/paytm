@@ -2,6 +2,7 @@
 import prisma from "@repo/db/client";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../auth";
+import { amountSchema } from "../../../utils/zodSchema";
 
 const WEBHOOK_API: string = process.env.WEBHOOK_URL || "";
 
@@ -32,6 +33,14 @@ export async function createOnRampTransaction(
   const session = await getServerSession(authOptions);
   if (!session?.user || !session?.user?.id) {
     return { message: "Unaunthenticated Request" };
+  }
+
+  const parsedData = amountSchema.safeParse(amount);
+
+  if (!parsedData.success) {
+    parsedData.error.errors.forEach((issue) => {
+      throw new Error(issue.message);
+    });
   }
 
   const token = (Math.random() * 1000).toString();
