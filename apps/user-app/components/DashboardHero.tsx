@@ -3,8 +3,8 @@ import React from "react";
 
 const DashboardHero = () => {
   return (
-    <div className="bg-sky-200 w-3/4 h-[85vh] rounded-[4rem] absoulte flex items-center">
-      <h1 className="pl-6 text-[4rem] font-semibold leading-snug">
+    <div className="bg-sky-200 md:w-3/4 w-4/5 md:h-[85vh] h-[60vh] rounded-[4rem] absoulte flex items-center">
+      <h1 className="pl-6 md:text-[4rem] text-5xl font-semibold leading-snug">
         Fast, Safe, <br /> Social payments
       </h1>
       <Image
@@ -12,7 +12,7 @@ const DashboardHero = () => {
         src={"/home-hero.webp"}
         width={560}
         height={150}
-        className="relative top-24 left-28"
+        className="relative md:top-24 md:left-28 top-72 right-48"
       />
     </div>
   );
