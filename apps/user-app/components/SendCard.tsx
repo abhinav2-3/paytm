@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { Center } from "@repo/ui/center";
 import { Card } from "@repo/ui/card";
 import { TextInput } from "@repo/ui/textinput";
@@ -18,6 +18,15 @@ const SendCard = ({
   const [amount, setAmount] = useState("");
   const [loading, setLoading] = useState(false);
 
+  const audioRef = useRef<HTMLAudioElement>(null);
+
+  const playNotification = () => {
+    if (audioRef.current) {
+      const audioElement = audioRef.current;
+      audioElement.play();
+    }
+  };
+
   const handleP2P = async () => {
     setLoading(true);
     if (!phoneNumber) {
@@ -26,6 +35,7 @@ const SendCard = ({
     try {
       const tnx = await p2pTransfer(phoneNumber, Number(amount) * 100);
       if (tnx.success) {
+        playNotification();
         toast.success("Money Transfered");
         setPhoneNumber("");
         setAmount("");
@@ -34,7 +44,10 @@ const SendCard = ({
       console.log(error);
       toast.error(error.message);
     } finally {
-      setLoading(false);
+      setTimeout(() => {
+        setLoading(false);
+        closeModel(false);
+      }, 1500);
     }
   };
 
@@ -55,15 +68,10 @@ const SendCard = ({
               onChange={(value) => setAmount(value)}
             />
             <div className="pt-4 flex justify-center">
-              <Button
-                loading={loading}
-                onClick={async () => {
-                  await handleP2P();
-                  closeModel(false);
-                }}
-              >
+              <Button loading={loading} onClick={handleP2P}>
                 {loading ? "Sending..." : "Send Money"}
               </Button>
+              <audio src="/success.mp3" ref={audioRef} />
             </div>
           </div>
         </Card>
