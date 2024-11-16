@@ -12,6 +12,7 @@ export type User = {
 };
 
 const Users = ({ users }: { users: any }) => {
+  const [number, setNumber] = useState<string | null>(null);
   const [input, setInput] = useState<string>("");
   const [openBox, setOpenBox] = useState<boolean>(false);
   const [filteredUsers, setFilteredUsers] = useState<User[]>(users);
@@ -45,7 +46,14 @@ const Users = ({ users }: { users: any }) => {
         return (
           <div className="flex justify-between my-4 items-center" key={u.id}>
             <h1 className="font-bold  px-4">{u.name}</h1>
-            <Button onClick={() => setOpenBox(true)}>Send Money</Button>
+            <Button
+              onClick={() => {
+                setOpenBox(true);
+                setNumber(u.number);
+              }}
+            >
+              Send Money
+            </Button>
             {openBox && (
               <div className="md:w-[75%] md:h-[85%] w-[80%] h-[50%] flex flex-col top-48 right-10 md:right-24 rounded-2xl bg-white absolute md:top-16">
                 <button
@@ -55,7 +63,7 @@ const Users = ({ users }: { users: any }) => {
                   <IoIosCloseCircle size={30} />
                 </button>
                 <Center>
-                  <SendCard user={u} closeModel={setOpenBox} />
+                  <SendCard number={number} closeModel={setOpenBox} />
                 </Center>
               </div>
             )}

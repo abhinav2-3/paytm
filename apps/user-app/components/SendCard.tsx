@@ -7,18 +7,27 @@ import { Button } from "@repo/ui/button";
 import { p2pTransfer } from "../app/lib/actions/p2pTransfer";
 import toast from "react-hot-toast";
 
-const SendCard = ({ user, closeModel }: { user?: any; closeModel?: any }) => {
-  const [number, setNumber] = useState(user?.number);
+const SendCard = ({
+  number,
+  closeModel,
+}: {
+  number?: string | null;
+  closeModel?: any;
+}) => {
+  const [phoneNumber, setPhoneNumber] = useState(number);
   const [amount, setAmount] = useState("");
   const [loading, setLoading] = useState(false);
 
   const handleP2P = async () => {
     setLoading(true);
+    if (!phoneNumber) {
+      return;
+    }
     try {
-      const tnx = await p2pTransfer(number, Number(amount) * 100);
+      const tnx = await p2pTransfer(phoneNumber, Number(amount) * 100);
       if (tnx.success) {
         toast.success("Money Transfered");
-        setNumber("");
+        setPhoneNumber("");
         setAmount("");
       }
     } catch (error: any) {
@@ -37,8 +46,8 @@ const SendCard = ({ user, closeModel }: { user?: any; closeModel?: any }) => {
             <TextInput
               label="Number"
               placeholder="Number"
-              value={user?.number}
-              onChange={(value) => setNumber(value)}
+              value={number!}
+              onChange={(value) => setPhoneNumber(value)}
             />
             <TextInput
               label="Amount"
