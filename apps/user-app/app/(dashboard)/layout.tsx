@@ -5,6 +5,7 @@ import { BiTransfer } from "react-icons/bi";
 import { CiClock2 } from "react-icons/ci";
 import { GoArrowUpRight } from "react-icons/go";
 import { AiOutlineUserSwitch } from "react-icons/ai";
+import { RiMoneyRupeeCircleLine } from "react-icons/ri";
 
 const layout = ({ children }: { children: ReactNode }) => {
   return (
@@ -34,6 +35,11 @@ const layout = ({ children }: { children: ReactNode }) => {
           href="/users"
           title="All Users"
           icon={<AiOutlineUserSwitch size={24} />}
+        />
+        <SidebarItem
+          href="/cashwithdraw"
+          title="Cash Withdraw"
+          icon={<RiMoneyRupeeCircleLine size={24} />}
         />
       </div>
       <div className="w-[76vw]">{children}</div>
