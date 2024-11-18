@@ -25,24 +25,24 @@ const WithdrawCash = () => {
 
   const withdrawHandler = async () => {
     setLoading(true);
-
     try {
       await withdrawCash(value, number);
       setRedirect(true);
       playNotification();
-      toast.success("Check you Pocket 😉");
+      toast.success("Check your Pocket 😉");
       setNumber(null);
       setValue(0);
+      router.push("/transfer");
     } catch (error: any) {
       console.log(error);
-      toast.error(error.message);
+      toast.error("Wrong Mobile Number");
     } finally {
       setTimeout(() => {
         setLoading(false);
-        redirect && router.push("/transfer");
       }, 1200);
     }
   };
+
   return (
     <Card title="Withdraw Cash">
       <div>
