@@ -5,7 +5,7 @@ import { authOptions } from "../../lib/auth";
 import prisma from "@repo/db/client";
 import { P2PTransactions } from "../../../components/P2PTransactions";
 
-interface transactionsType {
+export interface P2PTransactionsType {
   id: number;
   amount: number;
   timestamp: Date;
@@ -22,8 +22,11 @@ const getP2PTransaction = async () => {
         { toUserId: Number(session?.user?.id) },
       ],
     },
+    orderBy: {
+      timestamp: "desc",
+    },
   });
-  return txns.map((t: transactionsType) => ({
+  return txns.map((t: P2PTransactionsType) => ({
     time: t.timestamp,
     amount: t.amount,
     type: t.fromUserId === Number(session?.user?.id) ? "Sent" : "Received",

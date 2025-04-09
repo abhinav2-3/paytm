@@ -15,7 +15,7 @@ export const BalanceCard = ({
         <div>{formatPrice(amount / 100)}</div>
       </div>
       <div className="flex justify-between border-b border-slate-300 py-2">
-        <div>Total Locked Balance</div>
+        <div>Locked Balance</div>
         <div>{formatPrice(locked / 100)}</div>
       </div>
       <div className="flex justify-between border-b border-slate-300 py-2">

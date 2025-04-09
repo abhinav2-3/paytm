@@ -7,7 +7,7 @@ import { authOptions } from "../../lib/auth";
 export interface TransactionsType {
   startTime: Date;
   amount: number;
-  status: string;
+  status: "Success" | "Failure" | "Processing";
   provider: string;
 }
 [];

@@ -23,10 +23,15 @@ async function getBalance() {
 async function getOnRampTransactions() {
   const session = await getServerSession(authOptions);
   const txns = await prisma.onRampTransaction.findMany({
+    take: 6,
     where: {
       userId: Number(session?.user?.id),
     },
+    orderBy: {
+      startTime: "desc",
+    },
   });
+
   return txns.map((t: TransactionsType) => ({
     time: t.startTime,
     amount: t.amount,

@@ -22,12 +22,12 @@ export const P2PTransactions = ({
       <div className="pt-2 w-full">
         {transactions.map((t, i) => (
           <div
-            className={`flex justify-between pt-2 ${t.type === "Sent" && "text-green-600"}`}
+            className={`flex justify-between pt-2 ${t.type === "Received" && "text-green-600"}`}
             key={i}
           >
             <div>
               <div className="text-sm font-semibold">{t.type} INR</div>
-              <div className="text-slate-600 text-xs">
+              <div className="text-slate-600 text-xs italic">
                 {t.time.toDateString()}
               </div>
             </div>

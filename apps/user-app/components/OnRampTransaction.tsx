@@ -35,8 +35,11 @@ export const OnRampTransactions = ({
                 {t.status}
               </div>
             </div>
-            <div className="flex flex-col justify-center">
-              {formatPrice(t.amount / 100)}
+            <div className="flex flex-col justify-center items-end">
+              <span className="font-semibold">
+                {formatPrice(t.amount / 100)}
+              </span>
+              <span className="text-xs text-slate-600"> {t.provider}</span>
             </div>
           </div>
         ))}
