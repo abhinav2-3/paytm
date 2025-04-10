@@ -1,50 +1,58 @@
-import prisma from "@repo/db/client";
-import { getServerSession } from "next-auth";
-import { authOptions } from "../../lib/auth";
+"use client";
+
 import { AddMoney } from "../../../components/AddMoney";
-import { BalanceCard } from "../../../components/BalanceCard";
 import { OnRampTransactions } from "../../../components/OnRampTransaction";
-import { handleError } from "../../lib/Exception";
 import { TransactionsType } from "../transactions/page";
+import { BalanceCardWrapper } from "../../../components/BalanceCardWrapper";
+import { useEffect, useState } from "react";
 
-async function getBalance() {
-  const session = await getServerSession(authOptions);
-  const balance = await prisma.balance.findFirst({
-    where: {
-      userId: Number(session?.user?.id),
-    },
-  });
-  return {
-    amount: balance?.amount || 0,
-    locked: balance?.locked || 0,
+// async function getBalance() {
+//   const session = await getServerSession(authOptions);
+//   const balance = await prisma.balance.findFirst({
+//     where: {
+//       userId: Number(session?.user?.id),
+//     },
+//   });
+//   return {
+//     amount: balance?.amount || 0,
+//     locked: balance?.locked || 0,
+//   };
+// }
+
+// async function getOnRampTransactions() {
+//   const session = await getServerSession(authOptions);
+//   const txns = await prisma.onRampTransaction.findMany({
+//     take: 6,
+//     where: {
+//       userId: Number(session?.user?.id),
+//     },
+//     orderBy: {
+//       startTime: "desc",
+//     },
+//   });
+
+//   return txns.map((t: TransactionsType) => ({
+//     time: t.startTime,
+//     amount: t.amount,
+//     status: t.status,
+//     provider: t.provider,
+//   }));
+// }
+
+export default function () {
+  const [refreshKey, setRefreshKey] = useState(0);
+  const [transactions, setTransactions] = useState<TransactionsType[]>([]);
+
+  const fetchTransactions = async () => {
+    const res = await fetch("/api/transactions");
+    const data = await res.json();
+    console.log(data);
+    setTransactions(data);
   };
-}
 
-async function getOnRampTransactions() {
-  const session = await getServerSession(authOptions);
-  const txns = await prisma.onRampTransaction.findMany({
-    take: 6,
-    where: {
-      userId: Number(session?.user?.id),
-    },
-    orderBy: {
-      startTime: "desc",
-    },
-  });
-
-  return txns.map((t: TransactionsType) => ({
-    time: t.startTime,
-    amount: t.amount,
-    status: t.status,
-    provider: t.provider,
-  }));
-}
-
-export default async function () {
-  const balance = await getBalance();
-  const transactions = await getOnRampTransactions();
-
-  if (!balance || !transactions) throw new handleError();
+  useEffect(() => {
+    fetchTransactions();
+  }, [refreshKey]);
 
   return (
     <div className="w-full">
@@ -53,10 +61,11 @@ export default async function () {
       </div>
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2 p-4">
         <div>
-          <AddMoney />
+          <AddMoney onSuccess={() => setRefreshKey((prev) => prev + 1)} />
         </div>
         <div>
-          <BalanceCard amount={balance.amount} locked={balance.locked} />
+          {/* <BalanceCard amount={balance.amount} locked={balance.locked} /> */}
+          <BalanceCardWrapper refreshTrigger={refreshKey} />
           <div className="pt-4">
             <OnRampTransactions transactions={transactions} />
           </div>

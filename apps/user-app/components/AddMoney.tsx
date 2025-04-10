@@ -26,7 +26,7 @@ const SUPPORTED_BANKS = [
   },
 ];
 
-export const AddMoney = () => {
+export const AddMoney = ({ onSuccess }: { onSuccess?: () => void }) => {
   const [provider, setProvider] = useState(SUPPORTED_BANKS[0]?.name || "");
   const [loading, setLoading] = useState(false);
   const [value, setValue] = useState(0);
@@ -40,8 +40,10 @@ export const AddMoney = () => {
       setLoading(true);
       const response = await createOnRampTransaction(provider, value);
       if (response.success) {
-        window.location.href = redirectUrl || "";
         setValue(0);
+      }
+      if (onSuccess) {
+        onSuccess();
       }
     } catch (error: any) {
       if (error?.message) toast.error(error?.message);

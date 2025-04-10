@@ -17,6 +17,7 @@ model User {
   Balance           Balance[]
   sentTransfers     P2PTransfer[]       @relation(name: "FromUserRelation")
   receivedTransfers P2PTransfer[]       @relation(name: "ToUserRelation")
+  lockedBalance     LockedBalance[]
 }
 
 model P2PTransfer {
@@ -41,11 +42,22 @@ model OnRampTransaction {
 }
 
 model Balance {
-  id     Int  @id @default(autoincrement())
-  userId Int  @unique
-  amount Int
-  locked Int
-  user   User @relation(fields: [userId], references: [id])
+  id        Int  @id @default(autoincrement())
+  userId    Int  @unique
+  amount    Int
+  locked    Int
+  lockedPin Int  @default(0000)
+  user      User @relation(fields: [userId], references: [id])
+}
+
+model LockedBalance {
+  id           Int      @id @default(autoincrement())
+  userId       Int      @unique
+  amount       Int
+  isLocked     Boolean
+  startDate    DateTime
+  maturityDate DateTime
+  user         User     @relation(fields: [userId], references: [id])
 }
 
 enum OnRampStatus {

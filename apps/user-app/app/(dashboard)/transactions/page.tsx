@@ -1,11 +1,14 @@
 import prisma from "@repo/db/client";
 import React from "react";
-import { OnRampTransactions } from "../../../components/OnRampTransaction";
+import {
+  OnRampTransactions,
+  OnRampTransactionType,
+} from "../../../components/OnRampTransaction";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../../lib/auth";
 
 export interface TransactionsType {
-  startTime: Date;
+  time: string;
   amount: number;
   status: "Success" | "Failure" | "Processing";
   provider: string;
@@ -23,9 +26,12 @@ async function getOnRampTransactions() {
     where: {
       userId: Number(session?.user?.id),
     },
+    orderBy: {
+      startTime: "desc",
+    },
   });
-  return txns.map((t: TransactionsType) => ({
-    time: t.startTime,
+  return txns.map((t: OnRampTransactionType) => ({
+    time: t.startTime!.toDateString(),
     amount: t.amount,
     status: t.status,
     provider: t.provider,
