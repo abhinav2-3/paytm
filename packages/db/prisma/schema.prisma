@@ -13,6 +13,7 @@ model User {
   name              String?
   number            String              @unique
   password          String
+  lockerPin         Int                 @default(0000)
   OnRampTransaction OnRampTransaction[]
   Balance           Balance[]
   sentTransfers     P2PTransfer[]       @relation(name: "FromUserRelation")
@@ -42,21 +43,23 @@ model OnRampTransaction {
 }
 
 model Balance {
-  id        Int  @id @default(autoincrement())
-  userId    Int  @unique
-  amount    Int
-  locked    Int
-  lockedPin Int  @default(0000)
-  user      User @relation(fields: [userId], references: [id])
+  id     Int  @id @default(autoincrement())
+  userId Int  @unique
+  amount Int
+  locked Int
+  user   User @relation(fields: [userId], references: [id])
 }
 
 model LockedBalance {
   id           Int      @id @default(autoincrement())
-  userId       Int      @unique
+  userId       Int
   amount       Int
   isLocked     Boolean
   startDate    DateTime
   maturityDate DateTime
+  name         String
+  currentValue Int      @default(0)
+  interestRate Int      @default(3)
   user         User     @relation(fields: [userId], references: [id])
 }
 

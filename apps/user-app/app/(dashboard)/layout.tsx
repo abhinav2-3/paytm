@@ -6,7 +6,7 @@ import { CiClock2 } from "react-icons/ci";
 import { GoArrowUpRight } from "react-icons/go";
 import { AiOutlineUserSwitch } from "react-icons/ai";
 import { RiMoneyRupeeCircleLine } from "react-icons/ri";
-import { FaBuildingLock } from "react-icons/fa6";
+import { FaUnlock, FaLock } from "react-icons/fa";
 
 const layout = ({ children }: { children: ReactNode }) => {
   return (
@@ -43,9 +43,14 @@ const layout = ({ children }: { children: ReactNode }) => {
           icon={<RiMoneyRupeeCircleLine size={24} />}
         />
         <SidebarItem
-          href="/smartLock"
-          title="Smart Lock[FD]"
-          icon={<FaBuildingLock size={24} />}
+          href="/locker"
+          title="Locker [FD]"
+          icon={<FaLock size={24} />}
+        />
+        <SidebarItem
+          href="/smartUnlock"
+          title="Smart Unlock"
+          icon={<FaUnlock size={24} />}
         />
       </div>
       <div className="w-[76vw]">{children}</div>
