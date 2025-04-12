@@ -10,6 +10,7 @@ interface CredentialsType {
   name: string;
   email: string;
   password: string;
+  lockerPin: string;
 }
 
 export const authOptions: NextAuthOptions = {
@@ -20,22 +21,33 @@ export const authOptions: NextAuthOptions = {
         phone: {
           label: "Phone number",
           type: "text",
-          placeholder: "1231231231",
+          placeholder: "Enter your Number",
           required: true,
         },
         name: {
           label: "Name",
           type: "text",
-          placeholder: "Your Name",
+          placeholder: "Enter Your Name",
           required: true,
         },
         email: {
           label: "email",
           type: "text",
-          placeholder: "Your Email",
+          placeholder: "Enter Your Email",
           required: true,
         },
-        password: { label: "Password", type: "password", required: true },
+        lockerPin: {
+          label: "Locker PIN",
+          type: "number",
+          placeholder: "Enter your 4 Digit PIN",
+          required: true,
+        },
+        password: {
+          label: "Password",
+          type: "password",
+          placeholder: "Enter your password",
+          required: true,
+        },
       },
       // TODO: User credentials type from next-auth
       async authorize(credentials: CredentialsType | undefined) {
@@ -43,7 +55,7 @@ export const authOptions: NextAuthOptions = {
           throw new Error("Missing credentials");
         }
         // Do zod validation, OTP validation here
-        const { phone, password, name, email } = credentials;
+        const { phone, password, name, email, lockerPin } = credentials;
         const existingUser = await db.user.findFirst({
           where: {
             number: phone,
@@ -55,14 +67,16 @@ export const authOptions: NextAuthOptions = {
             password,
             existingUser.password
           );
-          if (isValidPassword) {
+          const isPinMatch = existingUser.lockerPin === Number(lockerPin);
+          if (isValidPassword && isPinMatch) {
             return {
               id: existingUser.id.toString(),
               name: existingUser.name,
               email: existingUser.email,
+              lockerPin: existingUser.lockerPin,
             };
           } else {
-            throw new Error("Invalid password");
+            throw new Error("Invalid password or PIN");
           }
         } else {
           const hashedPassword = await bcrypt.hash(password, 10);
@@ -73,6 +87,7 @@ export const authOptions: NextAuthOptions = {
                 name: name,
                 email: email,
                 password: hashedPassword,
+                lockerPin: Number(lockerPin),
               },
             });
 
@@ -80,6 +95,7 @@ export const authOptions: NextAuthOptions = {
               id: user.id.toString(),
               name: user.name,
               email: user.number,
+              lockerPin: user.lockerPin,
             };
           } catch (error) {
             console.error("Error in authorization:", error);

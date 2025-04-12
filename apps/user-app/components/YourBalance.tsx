@@ -29,7 +29,7 @@ const YourBalance = async () => {
   return (
     <div className="w-full border-b border-slate-300 flex gap-3 px-16 py-3">
       <h1 className="font-bold">Your balance :</h1>
-      <h1 className="font-medium">{formatPrice(balance?.amount / 100)}</h1>
+      <h1 className="font-medium">{formatPrice(balance?.amount)}</h1>
     </div>
   );
 };

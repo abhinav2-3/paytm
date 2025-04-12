@@ -5,13 +5,22 @@ import { getServerSession } from "next-auth";
 import prisma from "@repo/db/client";
 import { Prisma } from "@prisma/client";
 
-export async function createLockedAmount(
-  amount: number,
-  maturityDate: Date,
-  pin: number,
-  name: string,
-  interestRate: number
-) {
+interface LockerData {
+  amount: number;
+  maturityDate: Date;
+  pin: number;
+  name: string;
+  interestRate: number;
+}
+
+export async function createLockedAmount({
+  amount,
+  maturityDate,
+  pin,
+  name,
+  interestRate,
+}: LockerData) {
+  console.log(maturityDate, "maturirty date");
   const session = await getServerSession(authOptions);
   const userId = Number(session?.user?.id);
   if (!userId)

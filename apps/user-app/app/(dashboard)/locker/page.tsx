@@ -1,48 +1,24 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { LockMoney } from "../../../components/LockMoney";
 import { BalanceCardWrapper } from "../../../components/BalanceCardWrapper";
-import Link from "next/link";
-import { Button } from "@repo/ui/button";
 import { FDTable } from "../../../components/FDTable";
 
 const page = () => {
   const [refreshKey, setRefreshKey] = useState(0);
-  const dummyData = [
-    {
-      id: 1,
-      name: "FD#1",
-      startDate: "2025-04-01",
-      maturityDate: "2025-06-01",
-      amount: 1000,
-      currentValue: 1060,
-    },
-    {
-      id: 2,
-      name: "FD#1",
-      startDate: "2025-04-01",
-      maturityDate: "2025-06-01",
-      amount: 1000,
-      currentValue: 1060,
-    },
-    {
-      id: 3,
-      name: "FD#1",
-      startDate: "2025-04-01",
-      maturityDate: "2025-06-01",
-      amount: 1000,
-      currentValue: 1060,
-    },
-    {
-      id: 4,
-      name: "FD#1",
-      startDate: "2025-04-01",
-      maturityDate: "2025-06-01",
-      amount: 1000,
-      currentValue: 1060,
-    },
-  ];
+  const [locker, setLocker] = useState([]);
+
+  const fetchBalance = async () => {
+    const res = await fetch("/api/locker");
+    const data = await res.json();
+    setLocker(data.data);
+  };
+
+  useEffect(() => {
+    fetchBalance();
+  }, [refreshKey]);
+
   return (
     <div className="w-full h-full">
       <div className="text-4xl text-[#6a51a6] pt-8 mb-8 font-bold">
@@ -68,23 +44,21 @@ const page = () => {
               Interest Rate: 3% per week
             </span>
           </div>
-          {/* <div className="mt-8 flex justify-center">
-            <Link
-              className="border border-gray-300 p-3 bg-green-500 text-white focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2"
-              href="/smartUnlock"
-            >
-              Unlock Money
-            </Link>
-          </div> */}
         </aside>
       </div>
       <div className="w-full mt-8 items-center">
-        <FDTable
-          data={dummyData}
-          onUnlock={() => {
-            console.log(dummyData);
-          }}
-        />
+        {locker.length === 0 ? (
+          <div className="text-2xl text-center font-semibold">
+            You haven't locked you Money!
+          </div>
+        ) : (
+          <FDTable
+            data={locker}
+            onUnlock={() => {
+              console.log(locker);
+            }}
+          />
+        )}
       </div>
     </div>
   );
