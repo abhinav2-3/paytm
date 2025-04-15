@@ -6,9 +6,8 @@ import {
   Transition,
   TransitionChild,
 } from "@headlessui/react";
-import { Fragment, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { Button } from "@repo/ui/button";
-import toast from "react-hot-toast";
 import { TextInput } from "@repo/ui/textinput";
 import { formatPrice } from "../utils/FormatPrice";
 
@@ -31,11 +30,12 @@ export const UnlockerModal = ({
   isOpen: boolean;
   onClose: () => void;
   data: FDItem;
-  onConfirmUnlock: (pin: number) => void;
+  onConfirmUnlock: (pin: number, penality: boolean) => void;
 }) => {
   const [pin, setPin] = useState("");
   const [confirmed, setConfirmed] = useState(false);
   const [error, setError] = useState("");
+  const [penality, setpenality] = useState(false);
 
   const [day, month, year] = data.maturityDate.split("/").map(Number);
   // Create a valid Date object
@@ -45,7 +45,10 @@ export const UnlockerModal = ({
     day ?? 1
   );
 
-  const isEarlyUnlock = validMaturityDate.getTime() > new Date().getTime();
+  useEffect(() => {
+    const isEarlyUnlock = validMaturityDate.getTime() > new Date().getTime();
+    setpenality(isEarlyUnlock);
+  }, []);
 
   const handleUnlock = () => {
     if (!pin || pin.length !== 4) {
@@ -53,13 +56,12 @@ export const UnlockerModal = ({
       return;
     }
 
-    if (isEarlyUnlock && !confirmed) {
+    if (penality && !confirmed) {
       setConfirmed(true);
       return;
     }
 
-    onConfirmUnlock(Number(pin));
-    toast.success("FD Unlock requested");
+    onConfirmUnlock(Number(pin), penality);
     setPin("");
     setConfirmed(false);
     onClose();
@@ -118,7 +120,7 @@ export const UnlockerModal = ({
                   </p>
                 </div>
 
-                {isEarlyUnlock && !confirmed && (
+                {penality && !confirmed && (
                   <div className="mt-4 p-3 bg-yellow-100 text-yellow-700 rounded-md text-sm">
                     ⚠️ Unlocking before maturity will charge 1% penalty. Click
                     unlock again to confirm.
@@ -149,7 +151,7 @@ export const UnlockerModal = ({
                     Cancel
                   </Button>
                   <Button onClick={handleUnlock}>
-                    {isEarlyUnlock && !confirmed ? "Continue Unlock" : "Unlock"}
+                    {penality && !confirmed ? "Continue Unlock" : "Unlock"}
                   </Button>
                 </div>
               </DialogPanel>

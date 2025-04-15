@@ -4,6 +4,8 @@ import React, { useEffect, useState } from "react";
 import { LockMoney } from "../../../components/LockMoney";
 import { BalanceCardWrapper } from "../../../components/BalanceCardWrapper";
 import { FDTable } from "../../../components/FDTable";
+import { breakeLocker } from "../../lib/actions/lockAmount";
+import toast from "react-hot-toast";
 
 const page = () => {
   const [refreshKey, setRefreshKey] = useState(0);
@@ -13,6 +15,20 @@ const page = () => {
     const res = await fetch("/api/locker");
     const data = await res.json();
     setLocker(data.data);
+  };
+
+  const handleLockerBreake = async (
+    id: number,
+    pin: number,
+    penality: boolean
+  ) => {
+    const res = await breakeLocker(id, pin, penality);
+    if (res.statusCode === 401 || res.statusCode === 404)
+      toast.error(res.message);
+    if (res.statusCode === 200) {
+      toast.success(res.message);
+      setRefreshKey((prev) => (prev += 1));
+    }
   };
 
   useEffect(() => {
@@ -54,9 +70,9 @@ const page = () => {
         ) : (
           <FDTable
             data={locker}
-            onUnlock={() => {
-              console.log(locker);
-            }}
+            onUnlock={(id, pin, penality) =>
+              handleLockerBreake(id, pin, penality)
+            }
           />
         )}
       </div>

@@ -30,7 +30,7 @@ export const LockMoney = ({ onSuccess }: { onSuccess?: () => void }) => {
       toast.error("Lock date must be in the future");
       return;
     }
-    console.log(lockDate, "lockdate");
+
     try {
       setLoading(true);
       const res = await createLockedAmount({
@@ -58,6 +58,10 @@ export const LockMoney = ({ onSuccess }: { onSuccess?: () => void }) => {
       new handleError("Failed to lock money");
     } finally {
       setLoading(false);
+      setValue(0);
+      setLockDate("");
+      setPin(0);
+      setName("");
     }
   };
 

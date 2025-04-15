@@ -11,7 +11,7 @@ export const FDTable = ({
   onUnlock,
 }: {
   data: FDItem[];
-  onUnlock: (id: number, pin: number) => void;
+  onUnlock: (id: number, pin: number, penality: boolean) => void;
 }) => {
   const [selectedFD, setSelectedFD] = useState<FDItem | null>(null);
   const [modalOpen, setModalOpen] = useState(false);
@@ -26,9 +26,9 @@ export const FDTable = ({
     setSelectedFD(null);
   };
 
-  const handleConfirmUnlock = (pin: number) => {
+  const handleConfirmUnlock = (pin: number, penality: boolean) => {
     if (!selectedFD) return;
-    onUnlock(selectedFD.id, pin);
+    onUnlock(selectedFD.id, pin, penality);
     closeModal();
   };
 
@@ -58,7 +58,7 @@ export const FDTable = ({
                 <td className="px-4 py-3">{formatPrice(fd.amount)}</td>
                 <td className="px-4 py-3">{formatPrice(fd.currentValue)}</td>
                 <td className="px-4 py-3">
-                  <Button onClick={() => openModal(fd)}>Unlockk</Button>
+                  <Button onClick={() => openModal(fd)}>Unlock</Button>
                 </td>
               </tr>
             ))}
