@@ -38,7 +38,7 @@ const page = () => {
   return (
     <div className="w-full h-full">
       <div className="text-4xl text-[#6a51a6] pt-8 mb-8 font-bold">
-        Smart Lock [FD]
+        Locker [FD]
       </div>
       <div className="w-full text-left pl-4 flex flex-col gap-2">
         <span className="text-sm text-gray-500">

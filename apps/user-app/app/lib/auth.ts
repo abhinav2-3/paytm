@@ -10,7 +10,7 @@ interface CredentialsType {
   name: string;
   email: string;
   password: string;
-  lockerPin: string;
+  demoPin: string;
 }
 
 export const authOptions: NextAuthOptions = {
@@ -36,10 +36,11 @@ export const authOptions: NextAuthOptions = {
           placeholder: "Enter Your Email",
           required: true,
         },
-        lockerPin: {
-          label: "Locker PIN",
+
+        demoPin: {
+          label: "Demo PIN (4-digit)",
           type: "number",
-          placeholder: "Enter your 4 Digit PIN",
+          placeholder: "Only for testing purpose",
           required: true,
         },
         password: {
@@ -55,7 +56,7 @@ export const authOptions: NextAuthOptions = {
           throw new Error("Missing credentials");
         }
         // Do zod validation, OTP validation here
-        const { phone, password, name, email, lockerPin } = credentials;
+        const { phone, password, name, email, demoPin } = credentials;
         const existingUser = await db.user.findFirst({
           where: {
             number: phone,
@@ -67,7 +68,7 @@ export const authOptions: NextAuthOptions = {
             password,
             existingUser.password
           );
-          const isPinMatch = existingUser.lockerPin === Number(lockerPin);
+          const isPinMatch = existingUser.lockerPin === Number(demoPin);
           if (isValidPassword && isPinMatch) {
             return {
               id: existingUser.id.toString(),
@@ -87,7 +88,7 @@ export const authOptions: NextAuthOptions = {
                 name: name,
                 email: email,
                 password: hashedPassword,
-                lockerPin: Number(lockerPin),
+                lockerPin: Number(demoPin),
               },
             });
 
