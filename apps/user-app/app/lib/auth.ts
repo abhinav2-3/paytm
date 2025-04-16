@@ -39,7 +39,7 @@ export const authOptions: NextAuthOptions = {
 
         demoPin: {
           label: "Demo PIN (4-digit)",
-          type: "number",
+          type: "password",
           placeholder: "Only for testing purpose",
           required: true,
         },
