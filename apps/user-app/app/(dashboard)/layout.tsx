@@ -6,7 +6,7 @@ import { CiClock2 } from "react-icons/ci";
 import { GoArrowUpRight } from "react-icons/go";
 import { AiOutlineUserSwitch } from "react-icons/ai";
 import { RiMoneyRupeeCircleLine, RiSecurePaymentLine } from "react-icons/ri";
-import { FaUnlock, FaLock } from "react-icons/fa";
+import { FaLock } from "react-icons/fa";
 
 const layout = ({ children }: { children: ReactNode }) => {
   return (
