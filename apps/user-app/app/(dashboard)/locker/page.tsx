@@ -41,17 +41,17 @@ const page = () => {
         Locker [FD]
       </div>
       <div className="w-full text-left pl-4 flex flex-col gap-2">
-        <span className="text-sm text-gray-500">
+        <span className="text-xs md:text-sm text-gray-500">
           You can lock your money for a fixed period of time and earn a fixed
           interest rate. You can also unlock your money before the maturity date
-          but you will be charged a penalty. Your default PIN is <b>0000</b>
+          but you will be charged a penalty.
         </span>
       </div>
-      <div className="w-full flex gap-4 items-center">
-        <aside className="w-1/2">
+      <div className="w-full flex md:flex-row flex-col gap-4 items-center">
+        <aside className="md:w-1/2 w-full">
           <LockMoney onSuccess={() => setRefreshKey((prev) => prev + 1)} />
         </aside>
-        <aside className="w-1/2">
+        <aside className="md:w-1/2 w-full">
           <BalanceCardWrapper refreshTrigger={refreshKey} />
           <div className="w-full text-left pl-4">
             <span className="text-sm text-gray-700">

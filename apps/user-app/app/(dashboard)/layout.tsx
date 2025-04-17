@@ -5,7 +5,7 @@ import { BiTransfer } from "react-icons/bi";
 import { CiClock2 } from "react-icons/ci";
 import { GoArrowUpRight } from "react-icons/go";
 import { AiOutlineUserSwitch } from "react-icons/ai";
-import { RiMoneyRupeeCircleLine } from "react-icons/ri";
+import { RiMoneyRupeeCircleLine, RiSecurePaymentLine } from "react-icons/ri";
 import { FaUnlock, FaLock } from "react-icons/fa";
 
 const layout = ({ children }: { children: ReactNode }) => {
@@ -48,9 +48,9 @@ const layout = ({ children }: { children: ReactNode }) => {
           icon={<FaLock size={24} />}
         />
         <SidebarItem
-          href="/smartUnlock"
-          title="Smart Unlock"
-          icon={<FaUnlock size={24} />}
+          href="/autoPayment"
+          title="Auto Payment"
+          icon={<RiSecurePaymentLine size={24} />}
         />
       </div>
       <div className="w-[76vw]">{children}</div>
