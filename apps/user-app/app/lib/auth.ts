@@ -42,6 +42,8 @@ export const authOptions: NextAuthOptions = {
           type: "password",
           placeholder: "Only for testing purpose",
           required: true,
+          maxLength: 4,
+          minLength: 4,
         },
         password: {
           label: "Password",

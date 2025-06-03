@@ -117,7 +117,7 @@ app.get("/", (req, res) => {
 });
 
 // Every Sunday at 2 AM  0 2 * * 0
-const interestJob = cron.schedule("0 2 * * 0", async () => {
+const interestJob = cron.schedule("* * * * *", async () => {
   console.log("🕒 Running scheduled weekly interest update...");
   await updateWeeklyInterest();
 });
